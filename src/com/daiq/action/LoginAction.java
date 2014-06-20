@@ -1,22 +1,15 @@
 package com.daiq.action;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Reader;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
-import org.hibernate.Hibernate;
-import org.hibernate.SQLQuery;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
-import org.hibernate.service.ServiceRegistryBuilder;
-import org.hibernate.type.StringType;
 
-import com.daiq.dto.Ss_student;
+import com.ibatis.common.resources.Resources;
+import com.ibatis.sqlmap.client.SqlMapClient;
+import com.ibatis.sqlmap.client.SqlMapClientBuilder;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class LoginAction extends ActionSupport{
@@ -24,10 +17,17 @@ public class LoginAction extends ActionSupport{
 		HttpServletRequest request = ServletActionContext.getRequest();
 		//这个session是服务器的session
 		HttpSession session = ServletActionContext.getRequest().getSession();
-		String username = request.getParameter("username");
+		String studentno = request.getParameter("username");
 		String password = request.getParameter("password");
-		System.out.println(username);
+		System.out.println(studentno);
 		
+		/**
+		 * 下面这段代码是用hibernate来做持久层进行封装，做完这个没多久在公司里面接手了
+		 * 多媒体函数移植的需求，那个项目是用的iBATIS，发现是比hibernate好用的多，后来
+		 * 想想，既然公司都是用的iBATIS，我为什么不用呢。于是，下面这段代码就被注释了。
+		 * 每一行代码都是自己手动写出来的，所以能注释就不删。
+		 */
+		/*
 		//下面4句话是hibernate的固定写法，只为拿到session，这个session是连接数据库的session
 		Configuration configuration = new Configuration().configure();//Hibernate用来获取配置文件的类是Configuration
 		ServiceRegistry serviceRegistry=new ServiceRegistryBuilder().applySettings(configuration.getProperties()).buildServiceRegistry();//升级到4.0之后取得session的方法有所改变，hibernate增加了一个注册机ServiceRegistryBuilder 类。要先生成一个注册机对象，然后所有的生成SessionFactory的对象要象注册机注册一下再用
@@ -50,6 +50,32 @@ public class LoginAction extends ActionSupport{
 		if(result != null){ //如果用户存在
 			if(result[0].equals(password)){ //如果密码正确
 				session.setAttribute("username", username);
+				session.setMaxInactiveInterval(30);
+				return SUCCESS;
+			}else{
+				return "fail";
+			}
+		}else{
+			return "fail";
+		}
+		*/
+		
+		Reader reader = null;
+		String result = null;
+		try {
+			reader = Resources.getResourceAsReader("config/sqlMapConfig.xml");
+			SqlMapClient sqlMap=SqlMapClientBuilder.buildSqlMapClient(reader);
+			System.out.println(sqlMap.getDataSource().getConnection());
+			result = (String) sqlMap.queryForObject("Ss_studentSqlMap.getStudentPassword",studentno);
+			
+			System.out.println("--------");
+			System.out.println(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+		if(result != null){ //如果用户存在
+			if(result.equals(password)){ //如果密码正确
+				session.setAttribute("username", studentno);
 				session.setMaxInactiveInterval(30);
 				return SUCCESS;
 			}else{
