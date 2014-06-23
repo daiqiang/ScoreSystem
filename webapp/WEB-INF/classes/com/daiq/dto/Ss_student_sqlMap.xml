@@ -9,5 +9,9 @@
 		resultClass="String">
 		select t.password from Ss_student t where t.studentno = #studentno#
 	</select>
-
+	
+	<insert id="insertStudent"
+			parameterClass="com.daiq.dto.Ss_student">
+			insert into ss_student(studentno,name,sex,classno,password) values(#studentno#,#name#,#sex#,#classno#,#password#)
+    </insert>
 </sqlMap>

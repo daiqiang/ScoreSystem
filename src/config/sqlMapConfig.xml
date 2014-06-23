@@ -11,7 +11,9 @@
         maxRequests="32"  
         maxSessions="10"  
         maxTransactions="5"  
-        useStatementNamespaces="true"/>   
+        useStatementNamespaces="true"/>  
+        
+    <!--  使用spring管理之后，这段就不需要了，写在spring的配置文件里面 
     <transactionManager type="JDBC">  
         <dataSource type="SIMPLE">  
              <property name="JDBC.Driver" value="oracle.jdbc.driver.OracleDriver"/>  
@@ -20,5 +22,7 @@
              <property name="JDBC.Password" value="tiger"/>  
         </dataSource>  
     </transactionManager>  
+    -->
+    
     <sqlMap resource="com/daiq/dto/Ss_student_sqlMap.xml"/>
 </sqlMapConfig>

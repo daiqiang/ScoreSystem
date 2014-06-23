@@ -1,11 +1,7 @@
 package com.daiq.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.springframework.stereotype.Component;
 
-@Entity
-@Table(name="ss_student")
 public class Ss_student {
 	String studentno;
 	String name;
@@ -13,7 +9,6 @@ public class Ss_student {
 	String classno;
 	String password;
 	
-	@Id
 	public String getStudentno() {
 		return studentno;
 	}
