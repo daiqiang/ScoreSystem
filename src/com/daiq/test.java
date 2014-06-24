@@ -15,7 +15,7 @@ public class test {
 	 */
 	public static void main(String[] args) {
 		Ss_student student = new Ss_student();
-		student.setStudentno("004");
+		student.setStudentno("008");
 		student.setName("xiaoming");
 		student.setSex("1");
 		student.setClassno("999");
@@ -23,6 +23,7 @@ public class test {
 		
 		ApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"config/beans.xml"});
 		Student_service student_service = (Student_service)context.getBean("Student_service");
+		context.getBean("baseDao");
 		student_service.insertStudent(student);
 		
 	}
