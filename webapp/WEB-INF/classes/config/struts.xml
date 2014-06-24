@@ -67,7 +67,7 @@
             <exception-mapping exception="java.lang.Exception" result="error"/>
         </global-exception-mappings>
 
-        <action name="loginAction" class="com.daiq.action.LoginAction">
+        <action name="loginAction" class="LoginAction_id">
             <result>
                 /loginSuccess.jsp
             </result>

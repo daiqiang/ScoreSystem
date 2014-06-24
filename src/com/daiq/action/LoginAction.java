@@ -2,17 +2,27 @@ package com.daiq.action;
 
 import java.io.Reader;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
+import com.daiq.service.Student_service;
 import com.ibatis.common.resources.Resources;
 import com.ibatis.sqlmap.client.SqlMapClient;
 import com.ibatis.sqlmap.client.SqlMapClientBuilder;
 import com.opensymphony.xwork2.ActionSupport;
 
+@Component("LoginAction_id")
+@Scope("prototype")
 public class LoginAction extends ActionSupport{
+	
+	@Resource(name="Student_service")
+	private Student_service student_service;
+	
 	public String execute() {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		//这个session是服务器的session
@@ -63,10 +73,14 @@ public class LoginAction extends ActionSupport{
 		Reader reader = null;
 		String result = null;
 		try {
+			/* 把ibatis交给spring管理起来之后就不用这样去读取配置文件了 modified by daiq 2014-6-24
 			reader = Resources.getResourceAsReader("config/sqlMapConfig.xml");
 			SqlMapClient sqlMap=SqlMapClientBuilder.buildSqlMapClient(reader);
 			System.out.println(sqlMap.getDataSource().getConnection());
 			result = (String) sqlMap.queryForObject("Ss_studentSqlMap.getStudentPassword",studentno);
+			*/
+			
+			result = student_service.selectPasswordByStudentno(studentno);
 			
 			System.out.println("--------");
 			System.out.println(result);

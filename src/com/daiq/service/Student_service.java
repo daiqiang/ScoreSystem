@@ -20,4 +20,8 @@ public class Student_service {
 	public boolean insertStudent(Ss_student student){
 		return student_daoImpl.insertStudent(student);
 	}
+	
+	public String selectPasswordByStudentno(String studentno){
+		return student_daoImpl.selectPasswordByStudentno(studentno);
+	}
 }

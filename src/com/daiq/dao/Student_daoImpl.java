@@ -12,5 +12,9 @@ public class Student_daoImpl extends baseDao implements Student_dao {
 		System.out.println("insert success");
 		return true;
 	}
-
+	
+	public String selectPasswordByStudentno(String studentno){
+		System.out.println("select success");
+		return (String) super.getClient().queryForObject("Ss_studentSqlMap.getStudentPassword",studentno);
+	}
 }

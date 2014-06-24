@@ -8,6 +8,18 @@
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
   
+   <!-- 配置spring监听器（与struts2整合时需要配置的） -->
+   <listener>
+  	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  	<!-- default: /WEB-INF/applicationContext.xml -->
+   </listener>
+   
+   <!-- 配置spring的别名和路径 -->
+   <context-param>
+  	<param-name>contextConfigLocation</param-name>
+  	<param-value>classpath:config/beans.xml</param-value>
+   </context-param>
+  
   <filter>
       <filter-name>struts2</filter-name>
       <filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
@@ -29,4 +41,5 @@
      <filter-name>CheckLogin</filter-name>
      <url-pattern>*</url-pattern>
    </filter-mapping>
+   
 </web-app>

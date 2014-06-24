@@ -32,9 +32,10 @@
         <property name="dataSource" ref="dataSource_oracle" />   
     </bean>
     
-    
+    <!--  
     <bean id="baseDao" class="com.daiq.dao.baseDao">
 	</bean>
+	-->
 	
     <!--  
     <bean id="Student_dao" class="com.daiq.dao.Student_daoImpl">
