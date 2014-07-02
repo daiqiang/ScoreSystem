@@ -25,7 +25,5 @@ public class test {
 		Student_service student_service = (Student_service)context.getBean("Student_service");
 		context.getBean("baseDao");
 		student_service.insertStudent(student);
-		
 	}
-
 }
