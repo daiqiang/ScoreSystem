@@ -15,7 +15,7 @@ public class test {
 	 */
 	public static void main(String[] args) {
 		Ss_student student = new Ss_student();
-		student.setStudentno("008");
+		student.setStudentno("010");
 		student.setName("xiaoming");
 		student.setSex("1");
 		student.setClassno("999");

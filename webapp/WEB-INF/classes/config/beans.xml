@@ -2,10 +2,16 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
      xmlns:context="http://www.springframework.org/schema/context"
+     xmlns:aop="http://www.springframework.org/schema/aop"
+     xmlns:tx="http://www.springframework.org/schema/tx"
      xsi:schemaLocation="http://www.springframework.org/schema/beans
          http://www.springframework.org/schema/beans/spring-beans.xsd
          http://www.springframework.org/schema/context
-         http://www.springframework.org/schema/context/spring-context.xsd">
+         http://www.springframework.org/schema/context/spring-context.xsd
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+         http://www.springframework.org/schema/tx
+         http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
    <context:component-scan base-package="com.daiq"/>
 
@@ -31,6 +37,31 @@
         <property name="sqlMapClient"   ref="sqlMapClient" />   
         <property name="dataSource" ref="dataSource_oracle" />   
     </bean>
+    
+    <!-- 事务管理器 -->
+    <bean id="transactionManager"
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource_oracle" />
+    </bean>
+    
+    <!-- 需要引入aop的命名空间,进行事物切面操作 -->
+    <aop:config>
+        <!-- 切入点指明了在service包所有方法产生事务拦截操作 -->
+        <aop:pointcut id="serviceMethods"
+            expression="execution(* com.daiq.service.*.*(..))" />
+        <!-- 定义了将采用何种拦截操作，这里引用到 txAdvice -->
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods" />
+    </aop:config>
+    
+    <!-- 需要引入tx的命名空间 -->
+    <!-- 这是事务通知操作，使用的事务管理器引用自 transactionManager -->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <!-- 指定哪些方法需要加入事务，这里懒惰一下全部加入，可以使用通配符来只加入需要的方法 -->
+            <tx:method name="insert*" propagation="REQUIRED" />
+            <tx:method name="delete*" propagation="REQUIRED" />
+        </tx:attributes>
+    </tx:advice>
     
     <!--  
     <bean id="baseDao" class="com.daiq.dao.baseDao">
