@@ -18,8 +18,6 @@ public class Student_service {
 		System.out.println("print success");
 	}
 	
-	
-	//@Transactional(rollbackFor=Exception.class) 
 	@Transactional
 	public boolean insertStudent(Ss_student student){
 		student_daoImpl.insertStudent(student);

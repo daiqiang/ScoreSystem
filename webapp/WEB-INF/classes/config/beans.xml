@@ -44,9 +44,6 @@
         <property name="dataSource" ref="dataSource_oracle" />
     </bean>
     
-    <!-- 处理日志方面的 bean--> 
-    <bean id="logInterceptor" class="com.daiq.aop.LogInterceptor"></bean>
-    
     <!-- 需要引入aop的命名空间,进行事物切面操作 -->
     <aop:config>
         <!-- 切入点指明了在service包所有方法产生事务拦截操作 -->
@@ -54,17 +51,6 @@
             expression="execution(* com.daiq.service.*.*(..))" />
         <!-- 定义了将采用何种拦截操作，这里引用到 txAdvice -->
         <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods" />
-        
-        <aop:aspect id="logAspect" ref="logInterceptor">
-        	 
-			<aop:after-throwing method="afterThrowing" throwing="ex" pointcut-ref="serviceMethods" />
-			<!--  
-			<aop:before method="before" pointcut-ref="serviceMethods"/>
-			
-			<aop:around method="aroundMethod" pointcut-ref="serviceMethods"/>
-			-->
-		</aop:aspect>
-		
     </aop:config>
     
     <!-- 需要引入tx的命名空间 -->
@@ -76,20 +62,6 @@
             <tx:method name="delete*" propagation="REQUIRED" />
         </tx:attributes>
     </tx:advice>
-    
-     
-    <!-- 将日志 bean 和业务 bean 通过代理的方式进行代理整合 --> 
-    <!--  
-    <bean name = "aopmethod" class ="org.springframework.aop.framework.ProxyFactoryBean"> 
-       <property name = "interceptorNames"> 
-           <list> 
-              <value>logInterceptor</value > 
-                  
-           </list> 
-       </property> 
-       <property name = "target" ref = "Student_service" ></property > 
-    </bean > 
-    -->
     
     <!--  
     <bean id="baseDao" class="com.daiq.dao.baseDao">
