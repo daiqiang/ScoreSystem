@@ -9,7 +9,7 @@ public class Student_daoImpl extends baseDao implements Student_dao {
 
 	public boolean insertStudent(Ss_student student) {
 		super.getClient().insert("Ss_studentSqlMap.insertStudent",student);
-		System.out.println("insert success");
+		System.out.println("insert");
 		return true;
 	}
 	

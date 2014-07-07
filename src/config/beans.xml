@@ -44,6 +44,16 @@
         <property name="dataSource" ref="dataSource_oracle" />
     </bean>
     
+    <!-- 编程式事务管理 -->
+    <bean id="txTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager" ref="transactionManager"></property>
+        <property name="propagationBehaviorName" value="PROPAGATION_REQUIRED"></property>
+    </bean>
+    
+    <bean id="txDefinition" class="org.springframework.transaction.support.DefaultTransactionDefinition">  
+        <property name="propagationBehaviorName" value="PROPAGATION_REQUIRED"></property>  
+    </bean>
+    
     <!-- 处理日志方面的 bean--> 
     <bean id="logInterceptor" class="com.daiq.aop.LogInterceptor"></bean>
     
