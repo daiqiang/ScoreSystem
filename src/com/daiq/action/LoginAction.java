@@ -80,7 +80,7 @@ public class LoginAction extends ActionSupport{
 		try {
 			if(flag!=null && flag.equals("1")){
 				Cookie cookie = new Cookie("cookie_user", studentno+"^"+password);
-				cookie.setMaxAge(60*60*24*7); //cookie 保存7天
+				cookie.setMaxAge(180); //cookie 保存的秒数
 				cookie.setPath("/");
 				response.addCookie(cookie);
 			}else{
@@ -89,7 +89,10 @@ public class LoginAction extends ActionSupport{
 				if(cookies!=null){
 					for(int i=0;i<cookies.length;i++){
 					    if(cookies[i].getName().equals("cookie_user")){
-					    	cookies[i].setMaxAge(0);
+					    	//Cookie cookie = new Cookie(cookies[i].getName(), null);  
+					    	cookies[i].setMaxAge(0); //设置cookie为过期
+					    	cookies[i].setPath("/");
+					    	response.addCookie(cookies[i]);
 					    }
 					}
 				}
