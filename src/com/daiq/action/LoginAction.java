@@ -3,7 +3,9 @@ package com.daiq.action;
 import java.io.Reader;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.struts2.ServletActionContext;
@@ -25,10 +27,13 @@ public class LoginAction extends ActionSupport{
 	
 	public String execute() {
 		HttpServletRequest request = ServletActionContext.getRequest();
+		HttpServletResponse response = ServletActionContext.getResponse();
+		
 		//这个session是服务器的session
 		HttpSession session = ServletActionContext.getRequest().getSession();
 		String studentno = request.getParameter("username");
 		String password = request.getParameter("password");
+		String flag = request.getParameter("flag");
 		System.out.println(studentno);
 		
 		/**
@@ -73,13 +78,17 @@ public class LoginAction extends ActionSupport{
 		Reader reader = null;
 		String result = null;
 		try {
+			if(flag!=null && flag.equals("1")){
+				Cookie cookie = new Cookie("cookie_user", studentno+"^"+password);
+				cookie.setMaxAge(60*60*24*7); //cookie 保存7天
+				response.addCookie(cookie);
+			}
 			/* 把ibatis交给spring管理起来之后就不用这样去读取配置文件了 modified by daiq 2014-6-24
 			reader = Resources.getResourceAsReader("config/sqlMapConfig.xml");
 			SqlMapClient sqlMap=SqlMapClientBuilder.buildSqlMapClient(reader);
 			System.out.println(sqlMap.getDataSource().getConnection());
 			result = (String) sqlMap.queryForObject("Ss_studentSqlMap.getStudentPassword",studentno);
 			*/
-			
 			result = student_service.selectPasswordByStudentno(studentno);
 			
 			System.out.println("--------");

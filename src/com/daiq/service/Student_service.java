@@ -39,7 +39,8 @@ public class Student_service {
 		
 		try {
 			student_daoImpl.insertStudent(student);
-			//int i = 1/0;
+			int i = 1/0;
+			//student_daoImpl.insertStudent(student);
 			System.out.println("insertStudent success");
 		} catch (RuntimeException e) {
 			txManager.rollback(status);
