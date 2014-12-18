@@ -13,6 +13,9 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.daiq.service.Student_service;
+import com.ibatis.common.resources.Resources;
+import com.ibatis.sqlmap.client.SqlMapClient;
+import com.ibatis.sqlmap.client.SqlMapClientBuilder;
 import com.opensymphony.xwork2.ActionSupport;
 
 @Component("LoginAction_id")
@@ -78,7 +81,18 @@ public class LoginAction extends ActionSupport{
 			if(flag!=null && flag.equals("1")){
 				Cookie cookie = new Cookie("cookie_user", studentno+"^"+password);
 				cookie.setMaxAge(60*60*24*7); //cookie 保存7天
+				cookie.setPath("/");
 				response.addCookie(cookie);
+			}else{
+				//清空cookie
+				Cookie[] cookies = request.getCookies();
+				if(cookies!=null){
+					for(int i=0;i<cookies.length;i++){
+					    if(cookies[i].getName().equals("cookie_user")){
+					    	cookies[i].setMaxAge(0);
+					    }
+					}
+				}
 			}
 			/* 把ibatis交给spring管理起来之后就不用这样去读取配置文件了 modified by daiq 2014-6-24
 			reader = Resources.getResourceAsReader("config/sqlMapConfig.xml");
